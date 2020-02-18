@@ -33,4 +33,30 @@ Then get a cert for the host:
 Follow the setup wizard and select option to redirect http to https. 
 **NOW** 
 > sudo docker-compose up -d
+
 from repo root directory.
+
+Now the tricky part. First add back in the ProxyPass sections to the host apache virtualhost files. See examples in "host_apache_sites" folder for reference.
+
+Now we need certs for our container. The docker-compose.yml files specifies volumes to persist these certs once created. Docker will not allow us to just ask for certs with apache like the host. We must accept dns challenges then get certs through apache.
+
+### Step 1.
+Get your running container name:
+> sudo docker container ls
+
+> sudo docker exec -it <your_container_name> /bin/bash
+
+Now that we are executing commands inside the container we will validate certs using DNS.
+> certbot -d yourdomain.com --manual --preferred-challenges dns certonly
+
+You will be asked to create a txt record at your domain host. Create the record and wait a little while before continuing with the process. The domain must match exactly the domain validated on host.
+
+Now, while still in container a normal apache validation should work:
+> sudo certbot --apache -d www.yourdomain.com
+
+So what happens if you shut down the container? Well, the certs are safe in our volume, but you will have to run
+> sudo certbot --apache -d www.yourdomain.com
+
+from within the container and select option to reisntall existing certs.
+
+Thats it! If this doesn't work for you or you know of a better way please let me know. 

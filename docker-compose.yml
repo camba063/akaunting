@@ -1,0 +1,20 @@
+version: '3.5'
+services:
+
+  akaunting:
+    image: <your_image_tag_here>
+    ports:
+      - 8002:80
+      - 8003:443
+    restart: always
+    volumes:
+      - akauntingdata:/var/www/html/akaunting
+      - akauntingapache:/etc/apache2/sites-available
+      - akauntingle:/etc/letsencrypt
+      - akauntinglelib:/var/lib/letsencrypt
+
+volumes:
+    akauntingdata:
+    akauntingapache:
+    akauntingle:
+    akauntinglelib:

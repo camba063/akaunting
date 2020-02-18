@@ -31,7 +31,7 @@ Then get a cert for the host:
 > sudo certbot --apache -d www.yourdomain.com
 
 Follow the setup wizard and select option to redirect http to https. 
-**NOW** 
+**NOW** we can...
 > sudo docker-compose up -d
 
 from repo root directory.
@@ -44,6 +44,7 @@ Now we need certs for our container. The docker-compose.yml files specifies volu
 Get your running container name:
 > sudo docker container ls
 
+Then...
 > sudo docker exec -it <your_container_name> /bin/bash
 
 Now that we are executing commands inside the container we will validate certs using DNS.
@@ -51,6 +52,7 @@ Now that we are executing commands inside the container we will validate certs u
 
 You will be asked to create a txt record at your domain host. Create the record and wait a little while before continuing with the process. The domain must match exactly the domain validated on host.
 
+### Step 2.
 Now, while still in container a normal apache validation should work:
 > sudo certbot --apache -d www.yourdomain.com
 
